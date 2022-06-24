@@ -1,0 +1,129 @@
+Kubernetes commands: (minikube)
+
+Check if Kubernetes and minicube is installed:
+$kubectl
+$minicube
+
+To Create and start cluster:
+$minikube start --vm-driver=hyperkit #specify hypervisor to use
+
+To Get status of nodes:
+$kubectl get nodes
+$minikube status
+
+To get version of Kubernetes installed:
+$kubectl version
+
+To check the pods:
+$kubectl get pod
+To get more information:
+$kubectl get pod -o wide
+
+To check the services:
+$kubectl get services
+
+To create Deployment (for POD):
+usage: 
+$kubectl create deployment NAME --image=image [--dry-run] [options]
+
+$kubectl create deployment nginx-depl --image=nginx
+
+$kubectl get deployment
+
+$kubectl get replicaset
+
+To edit deployment:
+$kubectl edit deployment nginx-depl
+
+Debugging pods:
+$kubectl logs <pod-name>
+$kubectl logs mongo-depl-839f69262c-vkjpm
+$kubectl describe pod <pod-name>
+$kubectl describe pod mongo-depl-839f69262c-vkjpm
+
+To go inside container (it=interactive terminal)
+$kubectl exec -it {pod-name} -- bin/bash
+$kubectl exec -it mongo-depl-839f69262c-vkjpm -- bin/bash
+
+To delete deployment:
+$kubectl delete deployment <deployment-name>
+$kubectl delete deployment mongo-depl
+$kubectl delete deployment nginx-depl
+
+Apply a configuration file (Execute all commands in the file):
+If changes are made in file then it will automatically update: i.e. create/update component
+$kubectl apply -f <filename>
+$kubectl apply -f nginx-deployment.yaml
+$kubectl apply -f nginx-service.yaml
+
+To validate that service has right pods, forwards request (check endpoint IP address-match with pod):
+$kubectl describe service nginx-service
+
+Get updated deployment details and write it to a yaml file:
+$kubectl get deployment nginx-deployment -o yaml > nginx-deployment-result.yaml
+
+Delete withconfig file:
+$kubectl delete-f <filename>
+$kubectl delete-f nginx-deployment.yaml
+$kubectl delete-f nginx-service.yaml
+--end of CRUD commands--
+
+Group resources in Namespaces
+To get namesapaces:
+$kubectl get namespace
+$kubectl get configmap -n my-namespace
+
+Configmap which contains cluster information:
+$kubectl cluster-info
+
+To create namespace:
+$kubectl create namespace my-namespace
+
+List resources bound to a namespace:
+$kubectl api-resources --namespaced=true
+
+List resources not bound to a namespace:
+$kubectl api-resources --namespaced=false
+
+Add namespace:
+$kubectl apply -f mysql-configmap.yaml --namespace=my-namespace
+# or include in config file under metadata as attribute
+
+Change active namespace: install kubens
+$kubens my-namespace
+
+Install ingress controller in Minikube:
+$minikube addons enable ingress
+
+$kubectl get ns #in minikube cluster kubernetes-dashboard is present already out-of-the-box but not accessible externally
+
+#show all components in kubernetes-dashboard:
+$kubectl get all -n kubernetes-dashboard
+
+Helm: package manager
+helm search <keyword>
+helm install <chartname>
+helm install --values=my-values.yaml <chartname>
+helm install --set version=2.0.0
+helm upgrade <chartname>
+helm rollback<chartname>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
