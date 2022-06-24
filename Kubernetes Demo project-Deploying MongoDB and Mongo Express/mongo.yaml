@@ -1,0 +1,47 @@
+#check docker hub mongo image for details on port, environment variables, etc
+#Deployment configuration for MongoDB
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-deployment
+  labels:
+    app: mongodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+      - name: mongodb
+        image: mongo
+        ports:
+        - containerPort: 27017 #default port of mongodb
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME #environment variable
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-secret #reference mongo-secret.yaml file
+              key: mongo-root-username #reference username from mongo-secret.yaml file
+        - name: MONGO_INITDB_ROOT_PASSWORD #environment variable
+          valueFrom: 
+            secretKeyRef:
+              name: mongodb-secret
+              key: mongo-root-password #reference password from mongo-secret.yaml file
+--- #document sepeartion for multiple docs
+#Service configuration for MongoDB
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-service
+spec:
+  selector: #to connect to pod through label
+    app: mongodb
+  ports:
+    - protocol: TCP
+      port: 27017 #service port
+      targetPort: 27017 #containerPort of deployment which should match with it

@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: name
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  rules: #routing rules 
+    - host: app.com  #host request must be forwarded to internal service (my-service)
+      http:
+        paths: #URL path
+          - path: /
+            backend:
+              serviceName: my-service
+              servicePort: 8080
+
+
