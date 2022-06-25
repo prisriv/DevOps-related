@@ -1,0 +1,23 @@
+Setup Prometheus monitoring on Kubernetes using Helm and Prometheus Operator:
+
+Install helm chart:
+$helm install prometheus stable/prometheus-operator #name of repo/name of chart
+
+To check what's running inside prometheus, alert manager and operator:
+$kubectl get statefulset
+$kubectl describe statefulset
+
+$kubectl describe statefulset prometheus-prometheus-prometheus-oper-prometheus > prom.yaml
+$kubectl describe statefulset alertmanager-prometheus-prometheus-oper-alertmanager > alert.yaml
+
+$kubectl get deployment
+$kubectl describe deployment prometheus-prometheus-oper-operator> oper.yaml
+
+$kubectl get service
+$kubectl get deployment
+$kubectl get pod
+
+Get port where grafana is running:
+$kubectl logs prometheus-grafana-67596ff846-p8t6s -c grafana
+
+$kubectl port-forward deployment/prometheus-grafana 3000
